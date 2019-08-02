@@ -1,0 +1,17 @@
+@import 'src/App.scss';
+
+.menu-item {
+    background-color: #F8F8F8;
+    cursor: pointer;
+    border: 1px solid $light-gray;
+    border-top: 3px solid $primary-color;
+    border-radius: 5px;
+    display: inline-block;
+    color: $medium-gray;
+    margin: 10px 0px;
+    padding: 10px;
+
+    &:hover {
+        color: $primary-color;
+    }
+}
