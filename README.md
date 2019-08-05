@@ -1,26 +1,35 @@
-# Take home project for TenantBase
+# TenantBase Take Home Assignment
 
-## Assignment
-Create a key-value storage server that speaks a small subset of the memcached protocol and persists data in SQLite. It should also have an HTTP server running out of the same process for monitoring. The monitoring page should include some basic Javascript interactivity.
+This repository contains the completed project for the TenantBase take home assignment. The main python program starts two processes as specified in the pdf instructions. The first starts the Flask app and delivers the client bundle on port 8000. The client receives the items list when it connects to the server using the socket io protocol. When the "return_items" event is emitted by the flask socket, the client will receive the list of items from the database. 
 
-Run server using: `python main.py database.sqlite`
+The second process starts the memcached server on port 11211 which emulates the [memcached protocol](https://github.com/memcached/memcached/blob/master/doc/protocol.txt) and implements the `get`, `set`, and `delete` methods. The server is multithreaded and can accept multiple clients from different terminal sessions. The memcached server will listen for input using sockets and update the SQLite database accordingly. On modifications to the database(`set` and `delete`), the server will issue a get request to the flask server to send the updated list of items back to the client.
 
-The server process should start, using database.sqlite as its store and reading or initializing the database file as appropriate. The process should begin accepting connections on two ports:
+### Requirements
+ | Name  | Version  |
+ |--------|---------|
+ | Python | 3.7.4   |
+ | Node   | 11.13.0 |
+ | npm    | 6.7.0   |
 
- - On port `11211`, implementing a subset of memcached’s TCP protocol.
- - On port `8000`, implementing a HTTP server that serves a simple status page, with a
-listing of keys and their associated values.
+### How to Run
+Execute the following commands in order:
+- `npm install` to install node modules
+- `npm run build` to build distribution bundle
+- `pip3 install -r requirements.txt` to install python dependencies
 
-**Memcached Interface**  
-The server will speak a tiny subset of the memcached protocol. It should support three
-commands:
- - `set` - Ignore the exptime field. Stored values will never expire in
-our system.
- - `get`
- - `delete`
+To run the program, execute:
+- `python3 main.py <database.sqlite>` where `<database.sqlite>` is name of database you want to use
+	- You can use the existing `database.sqlite` provided in the repository or you can specify a new one.
 
-**Web Server Interface**  
-Upon visiting port 8000, your server should display a simple monitoring interface:
- - Show a list of keys stored in the server, with the values hidden.
- - Items in list should “toggle open” a key using Javascript, and see the associated
-value stored for that key.
+
+The following is an example of what the page should look like:
+
+![Example](https://i.imgur.com/B60lPnR.png)
+
+### Suggested improvements
+- Authentication 
+- Message queue (RabbitMQ)
+- Material design
+- Mobile styles
+- GraphQL/Thrift
+- Jest tests
